@@ -1,24 +1,28 @@
 package com.wildcodeschool.myproject.controller;
 
 import com.wildcodeschool.myproject.model.Article;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.wildcodeschool.myproject.model.Category;
+import com.wildcodeschool.myproject.repository.CategoryRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.wildcodeschool.myproject.repository.ArticleRepository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
+
+import static java.lang.Long.parseLong;
 
 @RestController
 @RequestMapping("/articles")
 public class ArticleController {
 
     private final ArticleRepository articleRepository;
+    private final CategoryRepository categoryRepository;
 
-    public ArticleController(ArticleRepository articleRepository) {
+    public ArticleController(ArticleRepository articleRepository, CategoryRepository categoryRepository) {
         this.articleRepository = articleRepository;
+        this.categoryRepository = categoryRepository;
     }
 
 
@@ -60,8 +64,9 @@ public class ArticleController {
     }
 
     @GetMapping("/search-date")
-    public ResponseEntity<List<Article>> getArticlesCreateAfter(@RequestParam LocalDateTime searchDate) {
-        List<Article> articles = articleRepository.findByCreatedAtAfter(searchDate);
+    public ResponseEntity<List<Article>> getArticlesCreateAfter(@RequestParam String searchDate) {
+        LocalDateTime date = LocalDateTime.parse(searchDate);
+        List<Article> articles = articleRepository.findByCreatedAtAfter(date);
         if (articles.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -77,11 +82,31 @@ public class ArticleController {
         return ResponseEntity.ok(articles);
     }
 
+//    @GetMapping("/search-by-category/{categoryId}")
+//    public ResponseEntity<List<Article>> getArticlesByCategoryId(@RequestParam String searchCategory) {
+//        Long categoryId = Long.valueOf(searchCategory);
+//        List<Article> articles = articleRepository.findByCategory_Id(categoryId);
+//        if (articles.isEmpty()) {
+//            return ResponseEntity.noContent().build();
+//        }
+//        return ResponseEntity.ok(articles);
+//    }
+
 //Post
     @PostMapping
     public ResponseEntity<Article> createArticle(@RequestBody Article article) {
         article.setCreatedAt(LocalDateTime.now());
         article.setUpdatedAt(LocalDateTime.now());
+
+        // Ajout de la catégorie
+        if (article.getCategory() != null) {
+            Category category = categoryRepository.findById(article.getCategory().getId()).orElse(null);
+            if (category == null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            article.setCategory(category);
+        }
+
         Article savedArticle = articleRepository.save(article);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedArticle);
     }
@@ -97,6 +122,15 @@ public class ArticleController {
         article.setTitle(articleDetails.getTitle());
         article.setContent(articleDetails.getContent());
         article.setUpdatedAt(LocalDateTime.now());
+
+        // Mise à jour de la catégorie
+        if (articleDetails.getCategory() != null) {
+            Category category = categoryRepository.findById(articleDetails.getCategory().getId()).orElse(null);
+            if (category == null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            article.setCategory(category);
+        }
 
         Article updatedArticle = articleRepository.save(article);
         return ResponseEntity.ok(updatedArticle);

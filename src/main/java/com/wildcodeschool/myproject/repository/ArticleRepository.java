@@ -2,12 +2,12 @@ package com.wildcodeschool.myproject.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.wildcodeschool.myproject.model.Article;
+import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> findByTitle(String title);
@@ -18,5 +18,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> findTop5ByOrderByCreatedAtDesc();
 
+//    List<Article> findByCategory_Id(Long categoryId);
 
 }
