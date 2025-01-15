@@ -1,6 +1,9 @@
 package com.wildcodeschool.myproject.dto;
 
+import com.wildcodeschool.myproject.repository.ImageRepository;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ArticleDTO {
     private Long id;
@@ -8,6 +11,7 @@ public class ArticleDTO {
     private String content;
     private LocalDateTime updatedAt;
     private String categoryName;
+    private List<String> imagesUrls;
 
     // Getters et setters
 
@@ -50,5 +54,13 @@ public class ArticleDTO {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<String> getImagesUrls() {
+        return imagesUrls;
+    }
+
+    public void setImagesUrls(List<String> imagesUrls) {
+        this.imagesUrls = imagesUrls;
     }
 }
