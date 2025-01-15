@@ -2,6 +2,8 @@ package com.wildcodeschool.myproject.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Category {
     @Id
@@ -11,6 +13,10 @@ public class Category {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @OneToMany(mappedBy = "category")
+    private List<Article> articles;
+
+// Getters et setters
     public Long getId() {
         return id;
     }
@@ -24,6 +30,15 @@ public class Category {
     }
 
     public void setName(String name) {
+
         this.name = name;
+    }
+
+    public List<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
     }
 }
