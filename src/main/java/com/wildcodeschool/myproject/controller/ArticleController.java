@@ -82,15 +82,25 @@ public class ArticleController {
         return ResponseEntity.ok(articles);
     }
 
-//    @GetMapping("/search-by-category/{categoryId}")
-//    public ResponseEntity<List<Article>> getArticlesByCategoryId(@RequestParam String searchCategory) {
-//        Long categoryId = Long.valueOf(searchCategory);
-//        List<Article> articles = articleRepository.findByCategory_Id(categoryId);
-//        if (articles.isEmpty()) {
-//            return ResponseEntity.noContent().build();
-//        }
-//        return ResponseEntity.ok(articles);
-//    }
+    @GetMapping("/search-by-category")
+    public ResponseEntity<List<Article>> getArticlesByCategory(@RequestParam String searchCategory) {
+
+        List<Article> articles = articleRepository.findByCategoryName(searchCategory);
+        if (articles.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(articles);
+    }
+
+    @GetMapping("/search-by-category/{searchCategoryId}")
+    public ResponseEntity<List<Article>> getArticlesByCategoryId(@PathVariable Long searchCategoryId) {
+
+        List<Article> articles = articleRepository.findByCategoryId(searchCategoryId);
+        if (articles.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(articles);
+    }
 
 //Post
     @PostMapping
