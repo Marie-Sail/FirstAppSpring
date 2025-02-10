@@ -1,5 +1,6 @@
 package com.wildcodeschool.myproject.dto;
 
+import com.wildcodeschool.myproject.model.ArticleAuthor;
 import com.wildcodeschool.myproject.repository.ImageRepository;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ public class ArticleDTO {
     private LocalDateTime updatedAt;
     private String categoryName;
     private List<String> imagesUrls;
+    private List<AuthorDTO> authors;
 
     // Getters et setters
 
@@ -62,5 +64,13 @@ public class ArticleDTO {
 
     public void setImagesUrls(List<String> imagesUrls) {
         this.imagesUrls = imagesUrls;
+    }
+
+    public List<AuthorDTO> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<AuthorDTO> authors) {
+        this.authors = authors;
     }
 }
