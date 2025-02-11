@@ -1,9 +1,5 @@
 package com.wildcodeschool.myproject.dto;
 
-import com.wildcodeschool.myproject.model.ArticleAuthor;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
-
 import java.util.List;
 
 public class AuthorDTO {
@@ -11,7 +7,8 @@ public class AuthorDTO {
     private Long id;
     private String firstname;
     private String lastname;
-    private List<ArticleDTO> articles;
+//    private List<ArticleAuthorDTO> articlesAuthor;
+
 
     public Long getId() {
         return id;
@@ -37,11 +34,11 @@ public class AuthorDTO {
         this.lastname = lastname;
     }
 
-    public List<ArticleDTO> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<ArticleDTO> articles) {
-        this.articles = articles;
-    }
+//    public List<ArticleAuthorDTO> getArticlesAuthor() {
+//        return articlesAuthor;
+//    }
+//
+//    public void setArticlesAuthor(List<ArticleAuthorDTO> articlesAuthor) {
+//        this.articlesAuthor = articlesAuthor;
+//    }
 }
