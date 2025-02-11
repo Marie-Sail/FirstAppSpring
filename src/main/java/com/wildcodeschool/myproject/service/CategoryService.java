@@ -1,6 +1,7 @@
 package com.wildcodeschool.myproject.service;
 
 import com.wildcodeschool.myproject.dto.CategoryDTO;
+import com.wildcodeschool.myproject.exeption.ResourceNotFoundException;
 import com.wildcodeschool.myproject.mapper.CategoryMapper;
 import com.wildcodeschool.myproject.model.Category;
 import com.wildcodeschool.myproject.repository.CategoryRepository;
@@ -25,7 +26,8 @@ public class CategoryService {
     }
 
     public CategoryDTO getCategoryById(Long id) {
-        Category category = categoryRepository.findById(id).orElse(null);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("La categorie avec l'id " + id + " n'a pas été trouvé"));
         if(category == null) {
             return null;
         }
@@ -49,7 +51,8 @@ public class CategoryService {
     }
 
     public CategoryDTO updateCategory(Long id, Category newCategory) {
-        Category category = categoryRepository.findById(id).orElse(null);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("La categorie avec l'id " + id + " n'a pas été trouvé"));
         if(category == null) {
             return null;
         }
@@ -60,7 +63,8 @@ public class CategoryService {
     }
 
     public boolean deleteCategory(Long id) {
-        Category category = categoryRepository.findById(id).orElse(null);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("La categorie ne peut être supprimé, l'id " + id + " n'a pas été trouvé"));
         if(category == null) {
             return false;
         }

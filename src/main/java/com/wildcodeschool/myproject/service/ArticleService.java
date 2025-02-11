@@ -1,6 +1,7 @@
 package com.wildcodeschool.myproject.service;
 
 import com.wildcodeschool.myproject.dto.ArticleDTO;
+import com.wildcodeschool.myproject.exeption.ResourceNotFoundException;
 import com.wildcodeschool.myproject.mapper.ArticleMapper;
 import com.wildcodeschool.myproject.model.*;
 import com.wildcodeschool.myproject.repository.*;
@@ -42,10 +43,9 @@ public class ArticleService {
     }
 
     public ArticleDTO getArticleById(Long id) {
-        Article article = articleRepository.findById(id).orElse(null);
-        if (article == null) {
-            return null;
-        }
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("L'article avec l'id " + id + " n'a pas été trouvé"));
+
         return articleMapper.convertToDTO(article);
     }
 
@@ -104,10 +104,9 @@ public class ArticleService {
     }
 
     public ArticleDTO updateArticle(Long id, Article articleDetails) {
-        Article article = articleRepository.findById(id).orElse(null);
-        if (article == null) {
-            return null;
-        }
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("L'article avec l'id " + id + " n'a pas été trouvé"));
+
         article.setTitle(articleDetails.getTitle());
         article.setContent(articleDetails.getContent());
         article.setUpdatedAt(LocalDateTime.now());
@@ -177,7 +176,8 @@ public class ArticleService {
     }
 
     public boolean deleteArticle(Long id) {
-        Article article = articleRepository.findById(id).orElse(null);
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("L'article ne peut être suprimé, l'id " + id + " n'a pas été trouvé"));
         if (article == null) {
             return false;
         }

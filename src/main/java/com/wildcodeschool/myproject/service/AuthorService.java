@@ -1,6 +1,7 @@
 package com.wildcodeschool.myproject.service;
 
 import com.wildcodeschool.myproject.dto.AuthorDTO;
+import com.wildcodeschool.myproject.exeption.ResourceNotFoundException;
 import com.wildcodeschool.myproject.mapper.AuthorMapper;
 import com.wildcodeschool.myproject.model.Author;
 import com.wildcodeschool.myproject.repository.AuthorRepository;
@@ -25,7 +26,8 @@ public class AuthorService {
     }
 
     public AuthorDTO getAuthorById(Long id) {
-        Author author = authorRepository.findById(id).orElse(null);
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("L'auteur avec l'id " + id + " n'a pas été trouvé"));
         if (author == null) {
             return null;
         }
@@ -42,7 +44,8 @@ public class AuthorService {
     }
 
     public AuthorDTO updateAuthor(Long id, Author newAuthor) {
-        Author author = authorRepository.findById(id).orElse(null);
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("L'auteur avec l'id " + id + " n'a pas été trouvé"));
         if (author == null) {
             return null;
         }
@@ -56,7 +59,8 @@ public class AuthorService {
     }
 
     public boolean deleteAuthor(Long id) {
-        Author author = authorRepository.findById(id).orElse(null);
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("L'auteur ne peut être suprimé, l'id " + id + " n'a pas été trouvé"));
         if (author == null) {
             return false;
         }
