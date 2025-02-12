@@ -1,6 +1,7 @@
 package com.wildcodeschool.myproject.service;
 
 import com.wildcodeschool.myproject.dto.ArticleDTO;
+import com.wildcodeschool.myproject.dto.validatorDTO.ArticleCreateDTO;
 import com.wildcodeschool.myproject.exeption.ResourceNotFoundException;
 import com.wildcodeschool.myproject.mapper.ArticleMapper;
 import com.wildcodeschool.myproject.model.*;
@@ -49,7 +50,8 @@ public class ArticleService {
         return articleMapper.convertToDTO(article);
     }
 
-    public ArticleDTO createArticle(Article article) {
+    public ArticleDTO createArticle(ArticleCreateDTO articleCreateDTO) {
+        Article article = articleMapper.convertToEntity(articleCreateDTO);
         article.setCreatedAt(LocalDateTime.now());
         article.setUpdatedAt(LocalDateTime.now());
 
@@ -103,9 +105,11 @@ public class ArticleService {
         return articleMapper.convertToDTO(savedArticle);
     }
 
-    public ArticleDTO updateArticle(Long id, Article articleDetails) {
+    public ArticleDTO updateArticle(Long id, ArticleCreateDTO articleCreateDTO) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("L'article avec l'id " + id + " n'a pas été trouvé"));
+
+        Article articleDetails = articleMapper.convertToEntity(articleCreateDTO);
 
         article.setTitle(articleDetails.getTitle());
         article.setContent(articleDetails.getContent());
