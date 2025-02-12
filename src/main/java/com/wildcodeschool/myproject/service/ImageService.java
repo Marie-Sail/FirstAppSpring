@@ -1,6 +1,7 @@
 package com.wildcodeschool.myproject.service;
 
 import com.wildcodeschool.myproject.dto.ImageDTO;
+import com.wildcodeschool.myproject.dto.validatorDTO.ImageValidDTO;
 import com.wildcodeschool.myproject.exeption.ResourceNotFoundException;
 import com.wildcodeschool.myproject.mapper.ImageMapper;
 import com.wildcodeschool.myproject.model.Image;
@@ -35,17 +36,21 @@ public class ImageService {
         return imageMapper.convertToDTO(image);
     }
 
-    public ImageDTO createImage(Image image){
+    public ImageDTO createImage(ImageValidDTO imageValidDTO){
+        Image image = imageMapper.convertToEntity(imageValidDTO);
         Image savedImage = imageRepository.save(image);
         return imageMapper.convertToDTO(savedImage);
     }
 
-    public ImageDTO updateImage(Long id, Image imageDetails){
+    public ImageDTO updateImage(Long id, ImageValidDTO imageValidDTO){
         Image image = imageRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("L'image avec l'id " + id + " n'a pas été trouvé"));
         if (image == null) {
             return null;
         }
+
+        Image imageDetails = imageMapper.convertToEntity(imageValidDTO);
+
         image.setUrl(imageDetails.getUrl());
         Image updateImage = imageRepository.save(image);
         return imageMapper.convertToDTO(updateImage);
