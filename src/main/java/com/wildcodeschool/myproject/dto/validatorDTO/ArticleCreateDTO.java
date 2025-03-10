@@ -1,6 +1,5 @@
 package com.wildcodeschool.myproject.dto.validatorDTO;
 
-import com.wildcodeschool.myproject.dto.ImageDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
