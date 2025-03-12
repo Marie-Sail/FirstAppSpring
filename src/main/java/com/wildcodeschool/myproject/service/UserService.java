@@ -5,6 +5,7 @@ import com.wildcodeschool.myproject.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -28,5 +29,9 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password)); // Encodage du mot de passe avec BCrypt
         user.setRoles(roles);
         return userRepository.save(user);
+    }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 }
